@@ -1,6 +1,8 @@
 from openai import OpenAI
 from config import OPENAI_API_KEY
 
+#This script was a test for embed response using the embedding 3 model
+
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY was not loaded from .env")
 

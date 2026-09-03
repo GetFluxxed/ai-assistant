@@ -1,5 +1,6 @@
 from retrieval import retrieve_chunks
 
+#This script was a test for the LLM's response using Semantic Search
 
 question = (
     "Can a customer get their money "

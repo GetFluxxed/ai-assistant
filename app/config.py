@@ -1,6 +1,7 @@
 import os 
 from dotenv import load_dotenv  
 
+# Configuration variables for the rest of project
 
 load_dotenv()
 

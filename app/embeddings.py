@@ -5,6 +5,7 @@ from config import EMBEDDING_MODEL
 
 client = OpenAI()
 
+# Function creates Embeds to be stored within database which can be called later
 
 def create_embeddings(
     texts: list[str]

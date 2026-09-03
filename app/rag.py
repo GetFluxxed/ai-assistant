@@ -5,6 +5,7 @@ from retrieval import retrieve_chunks
 
 client = OpenAI()
 
+#Details the specifics that our LLM abides by
 
 def answer_question(question: str):
 

@@ -1,3 +1,4 @@
+#Configuration for database creation
 services:
   db:
     image: pgvector/pgvector:pg17

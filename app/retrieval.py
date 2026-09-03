@@ -3,6 +3,7 @@ from pgvector import Vector
 from db import get_connection
 from embeddings import create_embedding
 
+#Retrieves chunks for similar comparison using Semantic Search via Vector
 
 def retrieve_chunks(
     question: str,

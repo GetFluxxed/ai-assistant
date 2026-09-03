@@ -9,6 +9,7 @@ import fitz
 
 DOCUMENT_FOLDER = Path("documents")
 
+# Function iterates through pages storing data as text and parsing page number and contents.
 
 def extract_pdf(path: Path):
 
@@ -32,11 +33,15 @@ def extract_pdf(path: Path):
 
     return pages
 
+# This function defines how big our chunks are going to be, and the form we store them in
+
 def chunk_text(
     text: str,
     chunk_size: int = 400,
     overlap: int = 80
 ):
+
+# This iterates through all of our words within our chunk and appends them together in a list 
 
     words = text.split()
 
@@ -60,6 +65,8 @@ def chunk_text(
         start += chunk_size - overlap
 
     return chunks
+
+# This is parsing the information out of the chunks that we stored previously 
 
 def process_pdf(path: Path):
 
@@ -86,6 +93,9 @@ def process_pdf(path: Path):
 
 
     return processed_chunks
+
+# This turns the chunks contents into embeds that will be stored as 1536 numbers in the database
+
 def embed_chunks(chunks):
 
     texts = [
@@ -103,6 +113,9 @@ def embed_chunks(chunks):
         chunk["embedding"] = embedding
 
     return chunks
+
+# This saves the chunks and their embeds to the database
+
 def save_chunks(chunks):
     if not chunks:
         raise ValueError("No chunks to save")
@@ -114,7 +127,7 @@ def save_chunks(chunks):
 
     with get_connection() as conn:
         with conn.cursor() as cursor:
-            # Remove the previous version of this document.
+            # Remove the previous version of the document if redundant
             cursor.execute(
                 """
                 DELETE FROM document_chunks
@@ -148,6 +161,8 @@ def save_chunks(chunks):
 
         conn.commit()
 
+    #Entire workflow of scraping the PDF's and storing to the database
+
 def ingest_document(path: Path):
 
     print(f"Processing {path.name}")
@@ -166,6 +181,8 @@ def ingest_document(path: Path):
 
     print("Saved to database")
 
+
+# Ingests documents 1 by 1
 
 def ingest_all_documents():
 
