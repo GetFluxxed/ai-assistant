@@ -56,3 +56,26 @@ def chunk_text(
         start += chunk_size - overlap
 
     return chunks
+
+def process_pdf(path: Path):
+
+    pages = extract_pdf(path)
+
+    processed_chunks = []
+
+    for page in pages:
+
+        page_chunks = chunk_text(
+            page["text"]
+        )
+
+        for index, content in enumerate(
+            page_chunks
+        ):
+
+            processed_chunks.append({
+                "source_name": path.name,
+                "page_number": page["page_number"],
+                "chunk_index": index,
+                "content": content
+            })
