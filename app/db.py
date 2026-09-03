@@ -13,4 +13,3 @@ def get_connection():
 
     register_vector(connection)
     return connection
-print("I worked")
