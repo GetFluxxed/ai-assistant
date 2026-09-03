@@ -83,6 +83,9 @@ def process_pdf(path: Path):
                 "chunk_index": index,
                 "content": content
             })
+
+
+    return processed_chunks
 def embed_chunks(chunks):
 
     texts = [
@@ -101,13 +104,27 @@ def embed_chunks(chunks):
 
     return chunks
 def save_chunks(chunks):
+    if not chunks:
+        raise ValueError("No chunks to save")
+
+    source_name = chunks[0]["source_name"]
+
+    if any(chunk["source_name"] != source_name for chunk in chunks):
+        raise ValueError("Save one document at a time")
 
     with get_connection() as conn:
-
         with conn.cursor() as cursor:
+            # Remove the previous version of this document.
+            cursor.execute(
+                """
+                DELETE FROM document_chunks
+                WHERE source_name = %s
+                """,
+                (source_name,)
+            )
 
+            # Insert its complete, freshly processed chunks.
             for chunk in chunks:
-
                 cursor.execute(
                     """
                     INSERT INTO document_chunks
@@ -118,10 +135,8 @@ def save_chunks(chunks):
                         content,
                         embedding
                     )
-
                     VALUES (%s, %s, %s, %s, %s)
                     """,
-
                     (
                         chunk["source_name"],
                         chunk["page_number"],
